@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#fix{
+				width: 1210px;
+				height: 380px;
+				margin: 100px auto;
+				position: relative;
+				overflow: hidden;
+			}
+			#sld{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 4840px;
+				height: 380px;
+			}
+			#fix #sld img{
+				float: left;
+			}
+			
+			#fix ul{
+				height: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				list-style: none;
+			}
+			#fix ul li{
+				float: left;
+				width: 100px;
+				height: 35px;
+				color: white;
+				line-height: 35px;
+				text-align: center;
+				font-size: 15px;
+				font-family:"微软雅黑";
+				background: black;
+				opacity: 0.2;
+				filter: alpha(opacity=20);
+				margin-right: 2px;
+			}
+			#fix ul li:hover{
+				color: skyblue;
+				text-decoration: underline;
+				opacity: 0.6;
+				filter: alpha(opacity=60);
+				cursor: pointer;
+			}
+			#fix .lt{
+				position: absolute;
+				width: 30px;
+				height: 60px;
+				opacity: 0.3;
+				left: 0;
+				top: 160px;
+				display: none;
+			}
+			#fix .rt{
+				position: absolute;
+				width: 30px;
+				height: 60px;
+				opacity: 0.3;
+				right: 0;
+				top: 160px;
+				display: none;
+			}
+			#fix .lt:hover,#fix .rt:hover{
+				opacity: 0.8;
+			}
+		</style>
+	<script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+				var rcd=0;
+//				滑动函数
+				function slide(){
+					rcd++;
+					
+					if(rcd==4){
+						$('#sld').css({'left':'0'});
+						rcd=1;
+					};
+					var dis = rcd*(-1210)+'px';
+					$('#sld').stop().animate({'left':dis},1000)
+					if (rcd==3) {
+						$('#fix ul li').eq(0).css({'opacity': '0.6'}).siblings('li').css({'opacity': '0.2'})
+					}else{
+						$('#fix ul li').eq(rcd).css({'opacity': '0.6'}).siblings('li').css({'opacity': '0.2'})
+					}
+				}
+				
+//				设定定时器,开始轮播
+				var timer = setInterval(slide,2000);
+				var st;
+//				绑定li鼠标点击事件
+				$('#fix ul li').click(function(){
+					clearInterval(timer);
+					clearTimeout(st);
+					var rcd = $(this).index();
+					var dis =rcd*(-1210)+'px';
+					$('#sld').stop().animate({'left':dis},500)
+					$('#fix ul li').eq(rcd).css({'opacity': '0.6'}).siblings('li').css({'opacity': '0.2'})
+					st = setTimeout(function(){
+						timer = setInterval(slide,2000);
+					},3000)
+				});	
+
+//				左图标点击事件
+				$('#fix .lt').click(function(){
+					clearInterval(timer);
+					clearTimeout(st);
+					rcd--;
+					if(rcd==-1){
+						$('#sld').css({'left':'-3630px'});
+						rcd=2;
+					};
+					var dis = rcd*(-1210)+'px';
+					$('#sld').stop().animate({'left':dis},1000)
+					if (rcd==3) {
+						$('#fix ul li').eq(0).css({'opacity': '0.6'}).siblings('li').css({'opacity': '0.2'})
+					}else{
+						$('#fix ul li').eq(rcd).css({'opacity': '0.6'}).siblings('li').css({'opacity': '0.2'})
+					}
+					st = setTimeout(function(){
+						timer = setInterval(slide,2000);
+					},3000)
+				})
+//				右图标点击事件
+				$('#fix .rt').click(function(){
+					clearInterval(timer);
+					clearTimeout(st);
+					slide();
+					st = setTimeout(function(){
+						timer = setInterval(slide,2000);
+					},3000)
+				})
+//				给#fix div加鼠标移入事件
+				$('#fix').mouseenter(function(){
+					$('#fix a').css({'display':'block'});
+				})
+//				给#fix div加鼠标移出事件
+				$('#fix').mouseleave(function(){
+					$('#fix a').css({'display':'none'});
+				})
+		})
+				
+	</script>
+	</head>
+	<body>
+		<div id="fix">
+			<div id="sld">
+				<img src="轮播图/ph1.png"/>
+				<img src="轮播图/ph2.jpg"/>
+				<img src="轮播图/ph3.jpg"/>
+				<img src="轮播图/ph1.png"/>
+			</div>
+			<ul>
+				<li style="opacity: 0.6;">iPhone6</li>
+				<li>Mate9</li>
+				<li>vivo X9</li>
+			</ul>
+			<a href="javascript:void(0)" class="lt"><img src="轮播图/left.png"/></a>
+			<a href="javascript:void(0)" class="rt"><img src="轮播图/right.png"/></a>
+		</div>
+	</body>
+</html>
